@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) throws MapCreationExcepttion, MapSizeException {
 
-        RobotMap map = new RobotMap(100, 100, 15);
+        RobotMap map = new RobotMap(100, 100);
         try {
             RobotMap.Robot robot1 = map.createRobot(new Point(-3, 5));
         } catch (RobotCreationException e) {

@@ -8,26 +8,20 @@ public class RobotMap {
 
     private final int n;
     private final int m;
-    private final List<Robot> robots;
+    private final List<Robot> robots = new ArrayList<>();
     private final int maxRobotCount = 10;
 
-    public RobotMap(int n, int m, int maxRobotCount) throws MapCreationExcepttion {
-        try {
-            if(this.maxRobotCount < maxRobotCount || maxRobotCount < 0){
-                throw new IllegalArgumentException("Превышено максимальное количество ботов");
-            }
-            checkMapSize();
-        } catch (MapSizeException e){
-            throw new MapCreationExcepttion(e.getMessage());
-        }
+    public RobotMap(int n, int m) throws MapSizeException {
+        // TODO: 13.01.2023 Реализовать проверку входных параметров.
+        checkMapSize(n, m);
 
         this.n = n;
         this.m = m;
-        this.robots = new ArrayList<>();
+
     }
 
-    private void checkMapSize() throws MapSizeException {
-        if(n < 1 || m < 1){
+    private void checkMapSize(int n, int m) throws MapSizeException {
+        if (n < 1 || m < 1) {
             throw new MapSizeException("Заданные параметры карты ошибочны");
         }
     }
@@ -35,7 +29,7 @@ public class RobotMap {
     public Robot createRobot(Point point) throws RobotCreationException {
         final MapPoint robotPosition;
         try {
-            checkRobotsCount(robots);
+            checkRobotsCount();
             validatePoint(point);
             robotPosition = new MapPoint(point.getX(), point.getY());
         } catch (PointValidationException e) {
@@ -47,8 +41,8 @@ public class RobotMap {
         return robot;
     }
 
-    private void checkRobotsCount(List<Robot> robots) {
-        if(robots.size() >= maxRobotCount){
+    private void checkRobotsCount() {
+        if (robots.size() >= maxRobotCount) {
             throw new IllegalArgumentException("Превышено максимальное количество ботов");
         }
     }
