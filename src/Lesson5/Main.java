@@ -73,7 +73,7 @@ public class Main {
                 }
             } catch (CommandNotFoundException e) {
                 System.err.println("Команда [" + e.getMessage() + "] не найдена");
-            } catch (CommandExecutionException e) {
+            } catch (CommandExecutionException | RobotMoveException e) {
                 System.err.println("Во время исполнения команды произошла ошибка: " + e.getMessage());
             }
         }
@@ -93,12 +93,13 @@ public class Main {
             commands.put("q", this::quit);
             commands.put("a", this::addRobot);
             commands.put("l", this::listRobots);
-//            commands.put("m", this::moveRobots);
+            commands.put("m", this::moveRobots);
+            commands.put("cd", this::changeDirectionRobots);
 
             // FIXME: 27.01.2023
         }
 
-        public String handleCommand(String command) throws CommandNotFoundException, CommandExecutionException {
+        public String handleCommand(String command) throws CommandNotFoundException, CommandExecutionException, RobotMoveException {
             String[] split = command.split(" ");
             String commandCode = split[0];
 
@@ -128,43 +129,49 @@ public class Main {
             return null;
         }
 
+
         private String listRobots(String[] args) {
             return String.valueOf(RobotMap.getRobots());
         }
 
-//        private String moveRobots(String[] strings) {
-//            return ;
-//        }
-
-
-
-        private String printHelp(String[] args) {
-            return """
-                    h                  -> распечатать список допустимых команд (help)
-                    a 1 2              -> создать робота на позиции (1, 2) (add)
-                    l                  -> распечатать всех роботов (list)
-                    m id [5]           -> перемещаем робота на 1 единицу вперед (move)
-                    cd id [t, r, b, l] -> изменить направление робота (change direction)
-                    q                  -> завершить программу (quit)
-                    """;
-        }
-
-        private String quit(String[] args) {
-            System.exit(0);
+        private String moveRobots(String[] id) throws RobotMoveException {
+            long l = Long.parseLong(id[0], 10);
+            RobotMap.Robot robot = map.getRobobtByID(l);
+            robot.move();
             return null;
         }
 
-        private interface CommandExecutor {
-            String execute(String[] args) throws CommandExecutionException;
+        private String changeDirectionRobots(String[] args) {
+            long l = Long.parseLong(args[0], 10);
+            RobotMap.Robot robot = map.getRobobtByID(l);
+            switch (args[1]) {
+                case "t" -> robot.changeDirection(Direction.TOP);
+                case "r" -> robot.changeDirection(Direction.RIGHT);
+                case "b" -> robot.changeDirection(Direction.BOTTOM);
+                case "l" -> robot.changeDirection(Direction.LEFT);
+            }
+            return null;
         }
 
+            private String printHelp (String[]args){
+                return """
+                        h                  -> распечатать список допустимых команд (help)
+                        a 1 2              -> создать робота на позиции (1, 2) (add)
+                        l                  -> распечатать всех роботов (list)
+                        m id [5]           -> перемещаем робота на 1 единицу вперед (move)
+                        cd id [t, r, b, l] -> изменить направление робота (change direction)
+                        q                  -> завершить программу (quit)
+                        """;
+            }
+
+            private String quit (String[]args){
+                System.exit(0);
+                return null;
+            }
+
+            private interface CommandExecutor {
+                String execute(String[] args) throws CommandExecutionException, RobotMoveException;
+            }
+        }
     }
-
-    private void homework() {
-        // Доделать остальные команды move, change direction и list
-    }
-
-
-
-}
 

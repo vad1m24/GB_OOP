@@ -2,7 +2,7 @@ package Lesson5;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 public class RobotMap {
 
@@ -12,6 +12,7 @@ public class RobotMap {
 
     private static List<Robot> robots = null;
     private final int maxRobotCount = 10;
+
     public RobotMap(int n, int m) throws RobotCreationException {
         checkMapSize(n, m);
 
@@ -20,6 +21,16 @@ public class RobotMap {
         this.robots = new ArrayList<>();
 
     }
+
+    public Robot getRobobtByID(Long id) {
+        Optional<Robot> any = robots.stream().filter(robot -> robot.getId().equals(id)).findAny();
+        if (any.isPresent()) {
+            return any.get();
+        } else {
+            throw new RuntimeException("Робот не найден");
+        }
+    }
+
 
     private void checkMapSize(int n, int m) throws RobotCreationException {
         if (n < 1 || m < 1) {
@@ -63,12 +74,11 @@ public class RobotMap {
     public static List<Robot> getRobots() {
         return robots;
     }
-    
+
     public class Robot {
 
 
         public static final Direction DEFAULT_DIRECTION = Direction.TOP;
-
 
         private static Long idSequence = 1L;
 
@@ -122,8 +132,29 @@ public class RobotMap {
             this.direction = direction;
         }
 
+        public static Robot getRobot(Long n) throws PointValidationException {
+            Robot chosenRobot = null;
+            for (Robot robot : robots) {
+                if (n.equals(robot.getId())) {
+                    chosenRobot = robot;
+                }
+            }
+            return chosenRobot;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
         public MapPoint getPoint() {
             return point;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof Robot)) return false;
+            return super.equals(obj);
         }
 
         @Override
@@ -142,5 +173,4 @@ public class RobotMap {
             }
         }
     }
-
 }
