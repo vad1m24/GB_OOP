@@ -135,14 +135,14 @@ public class Main {
         }
 
         private String moveRobots(String[] id) throws RobotMoveException {
-            long l = Long.parseLong(id[0], 10);
+            long l = Long.parseLong(id[0]);
             RobotMap.Robot robot = map.getRobobtByID(l);
             robot.move();
             return null;
         }
 
         private String changeDirectionRobots(String[] args) {
-            long l = Long.parseLong(args[0], 10);
+            long l = Long.parseLong(args[0]);
             RobotMap.Robot robot = map.getRobobtByID(l);
             switch (args[1]) {
                 case "t" -> robot.changeDirection(Direction.TOP);
