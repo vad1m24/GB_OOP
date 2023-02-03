@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RobotMap {
+public class RobotMap implements IRobotMap {
 
     private final int n;
 
     private final int m;
 
-    private static List<Robot> robots = null;
-    private final int maxRobotCount = 10;
+    private static List<Robot> robots;
 
+    private final int maxRobotCount = 10;
     public RobotMap(int n, int m) throws RobotCreationException {
         checkMapSize(n, m);
 
@@ -31,6 +31,9 @@ public class RobotMap {
         }
     }
 
+    public static List<Robot> getRobots() {
+        return robots;
+    }
 
     private void checkMapSize(int n, int m) throws RobotCreationException {
         if (n < 1 || m < 1) {
@@ -71,9 +74,6 @@ public class RobotMap {
         }
     }
 
-    public static List<Robot> getRobots() {
-        return robots;
-    }
 
     public class Robot {
 
@@ -132,7 +132,7 @@ public class RobotMap {
             this.direction = direction;
         }
 
-        public static Robot getRobot(Long n) throws PointValidationException {
+        public Robot getRobot(Long n) throws PointValidationException {
             Robot chosenRobot = null;
             for (Robot robot : robots) {
                 if (n.equals(robot.getId())) {

@@ -6,34 +6,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-       /* RobotMap map = new RobotMap(100, 100);
-        try {
-            RobotMap.Robot robot1 = map.createRobot(new Point(-3, 5));
-        } catch (RobotCreationException e) {
-            System.err.println("Не удалось создать робота!");
-        }
-        try {
-            RobotMap.Robot robot2 = map.createRobot(new Point(4, 5)); // Direction = Direction.TOP
-            robot2.changeDirection(Direction.BOTTOM);
-            robot2.move();
-            System.out.println(robot2);
-        } catch (RobotCreationException e) {
-            System.err.println("Не удалось создать робота!");
-        } catch (RobotMoveException e) {
-            System.err.println("Не удалось сдвинуть робота с места!");
-        }
-
-        try {
-            RobotMap.Robot robot = map.createRobot(new Point(100, 100));
-            robot.changeDirection(Direction.BOTTOM);
-            robot.move();
-            System.out.println(robot);
-        } catch (RobotCreationException e) {
-            System.err.println("Не удалось создать робота!");
-        } catch (RobotMoveException e) {
-            System.err.println("Не удалось сдвинуть робота " + e.getRobot() + " с места!");
-        }*/
-
         Scanner userInput = new Scanner(System.in);
 
         System.out.println("Добро пожаловать в игру!");
@@ -77,7 +49,6 @@ public class Main {
                 System.err.println("Во время исполнения команды произошла ошибка: " + e.getMessage());
             }
         }
-
     }
 
     private static class CommandManager {
@@ -95,8 +66,6 @@ public class Main {
             commands.put("l", this::listRobots);
             commands.put("m", this::moveRobots);
             commands.put("cd", this::changeDirectionRobots);
-
-            // FIXME: 27.01.2023
         }
 
         public String handleCommand(String command) throws CommandNotFoundException, CommandExecutionException, RobotMoveException {
@@ -168,10 +137,5 @@ public class Main {
                 System.exit(0);
                 return null;
             }
-
-            private interface CommandExecutor {
-                String execute(String[] args) throws CommandExecutionException, RobotMoveException;
-            }
         }
     }
-
